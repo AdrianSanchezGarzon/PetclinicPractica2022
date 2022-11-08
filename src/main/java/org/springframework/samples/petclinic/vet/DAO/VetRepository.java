@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.vet;
+package org.springframework.samples.petclinic.vet.DAO;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
@@ -21,15 +21,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.vet.DTO.Vet;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
 
 /**
- * Repository class for <code>Specialities</code> domain objects All method names are
- * compliant with Spring Data naming conventions so this interface can easily be extended
- * for Spring Data. See:
+ * Repository class for <code>Vet</code> domain objects All method names are compliant
+ * with Spring Data naming conventions so this interface can easily be extended for Spring
+ * Data. See:
  * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -37,14 +38,14 @@ import java.util.List;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface SpecialtyRepository extends Repository<Specialty, Integer> {
+public interface VetRepository extends Repository<Vet, Integer> {
 
 	/**
-	 * Retrieve all <code>Specialities</code>s from the data store.
-	 * @return a <code>Collection</code> of <code>Specialities</code>s
+	 * Retrieve all <code>Vet</code>s from the data store.
+	 * @return a <code>Collection</code> of <code>Vet</code>s
 	 */
 	@Transactional(readOnly = true)
-	@Cacheable("specialties")
+	@Cacheable("vets")
 	Collection<Vet> findAll() throws DataAccessException;
 
 	/**
@@ -54,11 +55,17 @@ public interface SpecialtyRepository extends Repository<Specialty, Integer> {
 	 * @throws DataAccessException
 	 */
 	@Transactional(readOnly = true)
-	@Cacheable("specialties")
+	@Cacheable("vets")
 	Page<Vet> findAll(Pageable pageable) throws DataAccessException;
 
-	void save(Specialty specialty);
+	List<Vet> findByLastName(String lastName);
 
-	Specialty findById(@Param("id") Integer id);
+	List<Vet> findByFirstNameAndLastName(String firstName, String lastName);
+
+	List<Vet> findByFirstNameOrLastName(String firstName, String lastName);
+
+	void save(Vet vet);
+
+	Vet findById(@Param("id") Integer id);
 
 }
